@@ -1,5 +1,11 @@
 # Database Backup Project
 
+中文 | English
+
+---
+
+## 中文说明
+
 本项目是一个基于 Java + SQLite JDBC 的数据库备份与恢复工具。
 
 ## 项目目标
@@ -63,3 +69,71 @@
 ## 说明
 
 当前实现中，部分输出文件名与执行路径为固定值，可根据实际需求进一步参数化。
+
+---
+
+## English Description
+
+This project is a database backup and restore tool built with Java and SQLite JDBC.
+
+## Objectives
+
+- Read a SQLite database file
+- Export database schema and data into SQL scripts
+- Rebuild a new database from the generated SQL scripts
+
+## Implemented Features
+
+1. **Database Connection & Management**
+   - Connects to SQLite databases
+   - Commits transactions and closes connections
+
+2. **Database Metadata Export**
+   - Exports database version info as SQL comments
+   - Exports table schema (columns, primary keys, foreign keys)
+   - Exports indexes (DROP first, then CREATE)
+   - Exports table data as `INSERT` statements
+
+3. **Dependency Ordering**
+   - Performs topological sorting based on foreign key relationships
+   - Generates table creation statements in dependency-safe order
+
+4. **SQL Value Formatting**
+   - Supports `NULL`
+   - Escapes string values (single quotes)
+   - Supports BLOB values as hexadecimal SQL literals
+
+5. **SQL Replay Execution**
+   - Reads exported SQL files
+   - Executes SQL scripts to rebuild the database
+
+## Tech Stack
+
+- **Language**: Java
+- **Database**: SQLite
+- **Interface**: JDBC (`org.sqlite.JDBC`)
+- **Core APIs**:
+  - `DatabaseMetaData`
+  - `ResultSet` / `ResultSetMetaData`
+  - `FileWriter` / `BufferedWriter` / `BufferedReader`
+
+## Project Structure
+
+- `SourceCode/`
+  - `Main.java`: Program entry point
+  - `DbBasic.java`: Database connection and basic operations
+  - `DbUser.java`: Core backup/restore logic
+- `SourceDataBase/`: Source database samples
+- `BackUpFiles/`: Backup databases and exported SQL files
+- `Functional description.docx`: Functional requirement document
+
+## How to Run
+
+1. Compile Java source files
+2. Run the `Main` class
+3. Enter the SQLite database file path
+4. The program exports SQL and runs the restore process
+
+## Notes
+
+Some output filenames and execution paths are currently hardcoded and can be parameterized for better portability.
